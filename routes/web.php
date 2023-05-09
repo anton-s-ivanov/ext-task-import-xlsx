@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::view('/', 'importFormXLSX')->middleware('auth.basic');
-Route::post('/uploadFile', [App\Http\Controllers\UploadExcelFileController::class, 'uploadFile']);
-//Route::get('/rows', [App\Http\Controllers\DisplayRowsController::class, 'index']);
+Route::post('/uploadFile', [App\Http\Controllers\UploadExcelFileController::class, 'uploadFile'])->middleware('auth.basic');
+Route::get('/rows', [App\Http\Controllers\DisplayRowsController::class, 'index']);
 
 
