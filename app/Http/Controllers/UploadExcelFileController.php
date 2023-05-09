@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \Illuminate\Support\Facades\DB;
+use App\Rules\XLSXFormat;
 
 class UploadExcelFileController extends Controller
 {
@@ -17,18 +18,19 @@ class UploadExcelFileController extends Controller
 
     public function uploadFile(Request $request)
     {
+
+        //При объединении в одну проверку не срабатывает 'mimes:xlsx'
         $request->validate([
-            'file' => 'required|mimes:xlsx'
+            'file' => ['mimes:xlsx', 'required'],
+        ]);   
+        $request->validate([
+            'file' => new XLSXFormat
         ]);
 
         $fileContentArr = fastexcel()->import($request->file);
         $formatedFileContentArr = $this->getFormatedFileContent($fileContentArr);
 
-        if(!$formatedFileContentArr) {
-            return back()->withErrors(['Wrong file data']);
-        }
-
-        DB::table('rows')->insert($formatedFileContentArr);
+        // DB::table('rows')->insert($formatedFileContentArr);
 
         $message = 'File '. $request->file->getClientOriginalName() . ' uploaded ('. count($formatedFileContentArr) . ' elems)';
         return back()->with('success', $message) ;
@@ -43,17 +45,9 @@ class UploadExcelFileController extends Controller
 
     public function getFormatedFileContent($fileContentArr) 
     {
-        if(!gettype($fileContentArr) == 'object') {
-            return false;
-        }
-
         $formatedFileContentArr = [];
 
         foreach($fileContentArr as $fileContentArrElem) {
-
-            if(!$this->validateFileContentArrElem($fileContentArrElem)) {
-                return false;
-            }           
 
             $strArr['import_id'] = $fileContentArrElem['id'];
             $strArr['name'] = $fileContentArrElem['name'];
@@ -67,31 +61,4 @@ class UploadExcelFileController extends Controller
         return $formatedFileContentArr;
     }
 
-    /**
-     * Проверить входящие данные строки файла.
-     *
-     * @param  array $fileContentArrElem
-     * @return bool
-     */
-
-    public function validateFileContentArrElem($fileContentArrElem)
-    {
-        if(
-            !array_key_exists('id', $fileContentArrElem)
-            || !array_key_exists('name', $fileContentArrElem)
-            || !array_key_exists('date', $fileContentArrElem)
-        ) {
-            return false;
-        }
-
-        if(
-            strlen($fileContentArrElem['id']) > 254
-            || strlen($fileContentArrElem['name']) > 254
-            || gettype($fileContentArrElem['date']) != 'object'
-        ) {
-            return false;
-        }
-
-        return true;
-    }
 }
