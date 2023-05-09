@@ -17,7 +17,7 @@ class XLSXFormat implements ValidationRule
     {
         $fileContentArr = fastexcel()->import($value);
         $formatedFileContentArr = $this->validateFileContentArr($fileContentArr);
-
+    
         if(!$formatedFileContentArr) {
             $fail('Wrong file data.');
         }
@@ -69,6 +69,10 @@ class XLSXFormat implements ValidationRule
             || strlen($fileRow['name']) > 254
             || gettype($fileRow['date']) != 'object'
         ) {
+            return false;
+        }
+
+        if(get_class($fileRow['date']) != 'DateTimeImmutable') {
             return false;
         }
 
