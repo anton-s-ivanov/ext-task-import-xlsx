@@ -17,4 +17,7 @@ Route::view('/', 'importFormXLSX')->middleware('auth.basic');
 Route::post('/uploadFile', [App\Http\Controllers\UploadExcelFileController::class, 'uploadFile'])->middleware('auth.basic');
 Route::get('/rows', [App\Http\Controllers\DisplayRowsController::class, 'index']);
 
+Route::get('/testWS', function(){
+    event(new \App\Events\DbRowsAddedEvent());
+});
 
