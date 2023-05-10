@@ -14,12 +14,15 @@ class DbRowsAddedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+
+    protected $rowsAddedQty;
+
     /**
      * Create a new event instance.
      */
-    public function __construct()
+    public function __construct($rowsAddedQty)
     {
-        //
+        $this->rowsAddedQty = $rowsAddedQty;
     }
 
     /**
@@ -33,5 +36,25 @@ class DbRowsAddedEvent implements ShouldBroadcast
             // new PrivateChannel('channel-name'),
             new Channel('public.test.chanel'),
         ];
+    }
+
+    /**
+     * Get the name of broadcast event.
+     *
+     * @return string
+     */
+    public function broadcastAs()
+    {
+        return 'db_rows_added';
+    }
+
+    /**
+     * Broadcast the data.
+     *
+     * @return string
+     */
+    public function broadcastWith()
+    {
+        return ['progressRows' => $this->rowsAddedQty];
     }
 }

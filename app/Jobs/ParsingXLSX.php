@@ -55,6 +55,7 @@ class ParsingXLSX implements ShouldQueue
             ]);
 
             Redis::incr($this->progressKey);
+            event(new \App\Events\DbRowsAddedEvent(Redis::get($this->progressKey)));
         }
         
     }

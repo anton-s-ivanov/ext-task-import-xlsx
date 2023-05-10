@@ -18,6 +18,6 @@ Route::post('/uploadFile', [App\Http\Controllers\UploadExcelFileController::clas
 Route::get('/rows', [App\Http\Controllers\DisplayRowsController::class, 'index']);
 
 Route::get('/testWS', function(){
-    event(new \App\Events\DbRowsAddedEvent());
+    event(new \App\Events\DbRowsAddedEvent(777));
 });
 
