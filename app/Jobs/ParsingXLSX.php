@@ -15,15 +15,28 @@ use Illuminate\Support\Facades\Redis;
 class ParsingXLSX implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
+    
+    /**
+     * Data array.
+     *
+     * @var array $rowsArr
+     */
     protected $rowsArr;
+
+    /**
+     * Redis progress key.
+     *
+     * @var array $progressKey
+     */
+    protected $progressKey;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($rowsArr)
+    public function __construct($rowsArr, $progressKey)
     {
         $this->rowsArr = $rowsArr;
+        $this->progressKey = $progressKey;
     }
 
     /**
@@ -41,7 +54,7 @@ class ParsingXLSX implements ShouldQueue
                 'date' => date_format($row['date'], 'Y-m-d'),
             ]);
 
-            Redis::incr('parsingProgress_'.auth()->user()->id);
+            Redis::incr($this->progressKey);
         }
         
     }

@@ -24,10 +24,11 @@ class UploadExcelFileController extends Controller
 
         $fileContentArr = fastexcel()->import($request->file);
 
-        Redis::set('parsingProgress_'.auth()->user()->id,  0);
+        $progressKey = 'parsingProgress_'.auth()->user()->id;
+        Redis::set($progressKey,  0);
 
         foreach (collect($fileContentArr)->chunk(1000) as $chunk) {
-            ParsingXLSX::dispatch($chunk);
+            ParsingXLSX::dispatch($chunk, $progressKey);
         }
             
         $message = 'File '. $request->file->getClientOriginalName() . ' uploaded ('. count($fileContentArr) . ' elems)';
