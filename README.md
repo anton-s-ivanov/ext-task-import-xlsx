@@ -11,12 +11,23 @@
 
 Пример файла для импорта: https://yadi.sk/i/YuwPGwcIzv1DBQ
 
-# Сделаны
-+ все пункты, кроме п.8 (laravel echo). Готов доделать до конца недели
+# Необходимо настроить в .ENV
++ DB - подключение
++ QUEUE_CONNECTION
++ BROADCAST_DRIVER=pusher
++ REDIS_CLIENT=predis
++ PUSHER_APP_ID=APP_ID (random)
++ PUSHER_APP_KEY=APP_KEY (random)
++ PUSHER_APP_SECRET=APP_SECRET (random)
 
 # Для запуска проекта выполнить команды
 + php artisan migrate:refresh --seed
 + php artisan queue:work
++ php artisan websockets:serve
 
 # Загрузки файла и отображение сообщений 
 + главная стр
+
+# Учетные данные (default)
++ Пользователь: test@test.ru
++ Пароль: test
