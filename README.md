@@ -16,9 +16,10 @@
 + QUEUE_CONNECTION
 + BROADCAST_DRIVER=pusher
 + REDIS_CLIENT=predis
-+ PUSHER_APP_ID=APP_ID (random)
-+ PUSHER_APP_KEY=APP_KEY (random)
-+ PUSHER_APP_SECRET=APP_SECRET (random)
++ PUSHER_APP_ID=random
++ PUSHER_APP_KEY=random_key
++ PUSHER_APP_SECRET=random_secret
++ PUSHER_APP_CLUSTER=mt1
 
 # Для запуска проекта выполнить команды
 + php artisan migrate:refresh --seed
@@ -26,7 +27,10 @@
 + php artisan websockets:serve
 
 # Загрузки файла и отображение сообщений 
-+ главная стр
++ главная страница
+
+# Демонстрация п.8 Laravel Echo  
++ главная страница - progress bar
 
 # Учетные данные (default)
 + Пользователь: test@test.ru
