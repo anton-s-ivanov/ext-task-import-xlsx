@@ -9076,18 +9076,48 @@ var __webpack_exports__ = {};
   !*** ./resources/js/app.js ***!
   \*****************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
-//const channel = Echo.channel(`public.test.chanel`);
-
-var channel = Echo["private"]("parsingProgressDB.user.1");
-channel.subscribed(function () {
-  console.log('subscribed!!!');
+var progress = 0;
+var total = totalElems.innerText;
+var totalRowsAddedDB = 120;
+progress = getProgress(totalRowsAddedDB);
+new Promise(function (resolve, reject) {
+  resolve(axios__WEBPACK_IMPORTED_MODULE_0___default().get('userID'));
+}).then(function (value) {
+  var userID = value.data;
+  var channel = Echo["private"]("parsingProgressDB.user.".concat(userID));
+  channel.subscribed(function () {
+    console.log('subscribed!!!');
+    progressBarContainer.style.display = 'flex';
+  });
+  channel.listen('.newRowDB', function (event) {
+    console.log(event);
+    progress = getProgress(event.totalRowsAddedDB);
+    if (progress === 100) {
+      closeParsingInfo();
+      return;
+    }
+    displayProgress(progress, event.totalRowsAddedDB);
+  });
 });
-channel.listen('.newRowDB', function (event) {
-  console.log(event);
-});
+function getProgress(totalRowsAddedDB) {
+  return Math.round(100 * totalRowsAddedDB / total);
+}
+function displayProgress(progress, totalRowsAddedDB) {
+  progressElem.style.width = progress + '%';
+  counterValue.innerText = progress + '%';
+  totalElems.innerText = totalRowsAddedDB + ' / ' + total;
+}
+function closeParsingInfo() {
+  progressBarContainer.style.display = 'none';
+  displayProcess.style.display = 'none';
+  displayFinished.style.display = 'block';
+  totalElems.innerText = total + ' / ' + total;
+}
 })();
 
 /******/ })()

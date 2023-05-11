@@ -16,11 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'importFormXLSX')->middleware('auth.basic');
 Route::post('/uploadFile', [App\Http\Controllers\UploadExcelFileController::class, 'uploadFile'])->middleware('auth.basic');
 Route::get('/rows', [App\Http\Controllers\DisplayRowsController::class, 'index']);
-
-Route::get('/WS-event', function(){
-    echo 'отправка события, тест WS';
-    event(new \App\Events\DbRowsAddedEvent(777, Auth::id()));
-});
-
-Route::view('/WS', 'testWS');
+Route::get('/userID', function(){ return Auth::id(); });
 

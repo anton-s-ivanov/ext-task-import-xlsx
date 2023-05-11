@@ -31,7 +31,7 @@ class UploadExcelFileController extends Controller
             ParsingXLSX::dispatch($rowsArr, $progressKey, auth()->user()->id);
         }
             
-        $message = 'File '. $request->file->getClientOriginalName() . ' uploaded ('. count($fileContentArr) . ' elems)';
+        $message = 'File '. $request->file->getClientOriginalName() . ' uploaded (<span id="totalElems">'. count($fileContentArr) . '</span> elems)';
         return back()->with('success', $message) ;
     }
     

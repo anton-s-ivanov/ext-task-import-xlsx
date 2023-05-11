@@ -36,7 +36,6 @@ class DbRowsAddedEvent implements ShouldBroadcast
     {
         return [
             new PrivateChannel('parsingProgressDB.user.'.$this->userID),
-            // new Channel('public.test.chanel'),
         ];
     }
 
@@ -58,6 +57,5 @@ class DbRowsAddedEvent implements ShouldBroadcast
     public function broadcastWith()
     {
         return ['totalRowsAddedDB' => $this->rowsAddedQty];
-        // return ['user' => $this->userID];
     }
 }

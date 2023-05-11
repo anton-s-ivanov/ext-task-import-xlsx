@@ -5,6 +5,8 @@
     <input type="submit" value="Загрузить">
 </form>
 
+@include('progressBar')
+
 @if ($errors->any())
     <div style="color:red">
         <h2>Validation errors</h2>
@@ -18,11 +20,12 @@
 
 @if (Session::has('success'))
     <div style="color:green">
-    <h2>Success</h2>
+    <h2 id="displayProcess">Process ...</h2>
+    <h2 id="displayFinished" style="display:none">Finished</h2>
         <ul>
-            <li>{{Session::get('success')}}</li>
+            <li>{!!Session::get('success')!!}</li>
         </ul>
     </div>
-@endif
 
-<script src="/public/js/app.js"></script>
+    <script src="/js/app.js"></script>
+@endif
