@@ -24,3 +24,5 @@
         </ul>
     </div>
 @endif
+
+<script src="/public/js/app.js"></script>

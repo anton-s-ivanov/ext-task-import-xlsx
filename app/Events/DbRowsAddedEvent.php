@@ -16,13 +16,15 @@ class DbRowsAddedEvent implements ShouldBroadcast
 
 
     protected $rowsAddedQty;
+    protected $userID;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($rowsAddedQty)
+    public function __construct($rowsAddedQty, $userID)
     {
         $this->rowsAddedQty = $rowsAddedQty;
+        $this->userID = $userID;
     }
 
     /**
@@ -33,8 +35,8 @@ class DbRowsAddedEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            // new PrivateChannel('channel-name'),
-            new Channel('public.test.chanel'),
+            new PrivateChannel('parsingProgressDB.user.'.$this->userID),
+            // new Channel('public.test.chanel'),
         ];
     }
 
@@ -45,16 +47,17 @@ class DbRowsAddedEvent implements ShouldBroadcast
      */
     public function broadcastAs()
     {
-        return 'db_rows_added';
+        return 'newRowDB';
     }
 
     /**
      * Broadcast the data.
      *
-     * @return string
+     * @return array
      */
     public function broadcastWith()
     {
-        return ['progressRows' => $this->rowsAddedQty];
+        return ['totalRowsAddedDB' => $this->rowsAddedQty];
+        // return ['user' => $this->userID];
     }
 }

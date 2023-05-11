@@ -26,17 +26,26 @@ class ParsingXLSX implements ShouldQueue
     /**
      * Redis progress key.
      *
-     * @var array $progressKey
+     * @var string $progressKey
      */
     protected $progressKey;
 
     /**
+     * User id.
+     *
+     * @var int $userID
+     */
+    protected $userID;
+
+
+    /**
      * Create a new job instance.
      */
-    public function __construct($rowsArr, $progressKey)
+    public function __construct($rowsArr, $progressKey, $userID)
     {
         $this->rowsArr = $rowsArr;
         $this->progressKey = $progressKey;
+        $this->userID = $userID;
     }
 
     /**
@@ -44,7 +53,7 @@ class ParsingXLSX implements ShouldQueue
      */
     public function handle(): void
     {
-        // можно сделать вставку всего чанка через insert.
+        // можно сделать вставку всего чанка через insert (подготовив массив).
         // будет быстрее, но точность учета прогресса будет кратна размеру чанка.
         
         foreach($this->rowsArr as $row) {
@@ -55,7 +64,7 @@ class ParsingXLSX implements ShouldQueue
             ]);
 
             Redis::incr($this->progressKey);
-            event(new \App\Events\DbRowsAddedEvent(Redis::get($this->progressKey)));
+            event(new \App\Events\DbRowsAddedEvent(Redis::get($this->progressKey), $this->userID));
         }
         
     }
