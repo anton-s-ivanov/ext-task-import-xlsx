@@ -3,9 +3,6 @@ import './bootstrap';
 
 var progress = 0;
 const total = totalElems.innerText;
-var totalRowsAddedDB = 120;
-progress = getProgress(totalRowsAddedDB);
-
 
 new Promise( function(resolve, reject) {
     resolve(axios.get('userID'))

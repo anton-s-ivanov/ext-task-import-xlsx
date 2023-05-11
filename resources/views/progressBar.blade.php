@@ -30,7 +30,7 @@
 
 <div id="progressBarContainer">
     <div id="progessBar">
-        <div id="progressElem" style="width:00%"></div>
+        <div id="progressElem" style="width:0%"></div>
     </div>
     <div id="counter">
         <span id="counterValue">0%</span>
